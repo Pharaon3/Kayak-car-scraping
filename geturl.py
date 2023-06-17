@@ -25,15 +25,24 @@ options.add_argument('window-size=1920x1080')
 options.add_argument("disable-gpu")
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), chrome_options=options)
 
-driver.get("https://www.kayak.com/cars")
+searchBtn = 'Iqt3-mod-stretch'
 
-with open('fullLocation.csv', mode='w', newline='') as file:
+id = 0
+with open('links43.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
-    time.sleep(0.3)
-    # elements = driver.find_elements_by_class_name("P_Ok-sublink-link")
-    elements = driver.find_elements(By.CLASS_NAME, "P_Ok-sublink-link")
-    for c in range(0, len(elements)):
-        link = elements[c].get_attribute('href')
-        print("link: " + link)
-        writer.writerow([link])
+    with open('43.csv', mode='r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            print(id)
+            id = id + 1
+            driver.get(row[0])
+            time.sleep(0.3)
+            eles = driver.find_elements(By.CLASS_NAME, searchBtn)
+            for ele in eles:
+                if ele.text == "Search":
+                    ele.click()
+                    new_tab_url = driver.current_url
+                    print(new_tab_url)
+                    writer.writerow([new_tab_url])
+                    break
 driver.close()
